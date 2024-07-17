@@ -1,4 +1,4 @@
-project_id = "supabse-test"
+project_id = "supabase-test"
 [api]
 enabled = false
 [db]

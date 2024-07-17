@@ -1,5 +1,6 @@
 package de.tschuehly.supabase.cli.testcontainers;
 
+import java.time.Duration;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -26,9 +27,13 @@ class TestcontainersConfiguration {
 				)
 				.withFileSystemBind("/var/run/docker.sock", "/var/run/docker.sock")
 				.withExposedPorts(56661)
+				.withNetworkMode("host")
 				.withAccessToHost(true)
-				.withCommand("supabase start --debug --ignore-health-check")
-				.waitingFor(Wait.forLogMessage(".*Started supabase local development setup.*", 1));
+				//.withEnv("DOCKER_HOST", "host.testcontainers.internal")
+				.withStartupTimeout(Duration.ofSeconds(70))
+				.withCommand("supabase start");
+
+				//.waitingFor(Wait.forLogMessage(".*Started supabase local development setup.*", 1));
 		Testcontainers.exposeHostPorts(56661);
 		return supabase;
   }
